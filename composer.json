@@ -1,0 +1,46 @@
+{
+	"name": "mirzaev/notchat",
+	"description": "Free P2P chat based on asdasd",
+	"readme": "README.md",
+	"keywords": [],
+	"type": "site",
+	"homepage": "https://git.mirzaev.sexy/mirzaev/notchat",
+	"license": "WTFPL",
+	"authors": [
+		{
+			"name": "mirzaev",
+			"email": "mirzaev@gmail.com",
+			"homepage": "https://mirzaev.page",
+			"role": "Programmer"
+		}
+	],
+	"support": {
+		"docs": "https://git.mirzaev.sexy/mirzaev/notchat/manual",
+		"issues": "https://git.mirzaev.sexy/mirzaev/notchat/issues"
+	},
+	"require": {
+		"php": "~8.3",
+		"ext-sodium": "~8.3",
+		"mirzaev/minimal": "^2.2.0",
+		"mirzaev/accounts": "~1.2.x-dev",
+		"mirzaev/arangodb": "^1.0.0",
+		"triagens/arangodb": "~3.9.x-dev",
+		"twig/twig": "^3.4"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~9.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"mirzaev\\notchat\\": "mirzaev/notchat/system"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"mirzaev\\notchat\\tests\\": "mirzaev/notchat/tests"
+		}
+	},
+	"scripts": {
+		"pre-update-cmd": "./install.sh"
+	}
+}

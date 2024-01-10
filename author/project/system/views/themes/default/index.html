@@ -1,0 +1,27 @@
+{% extends "core.html" %}
+
+{% use "core.html" with css as core_css, body as core, js as core_js %}
+{% use "header.html" with css as header_css, body as header, js as header_js %}
+{% use "footer.html" with css as footer_css, body as footer, js as footer_js %}
+
+{% block css %}
+{{ block('core_css') }}
+{{ block('header_css') }}
+{{ block('footer_css') }}
+{% endblock %}
+
+{% block body %}
+{{ block('header') }}
+<main>
+	{% block main %}
+	{{ main|raw }}
+	{% endblock %}
+</main>
+{{ block('footer') }}
+{% endblock %}
+
+{% block js %}
+{{ block('footer_js') }}
+{{ block('header_js') }}
+{{ block('core_js') }}
+{% endblock %}
