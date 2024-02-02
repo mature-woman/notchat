@@ -1,0 +1,186 @@
+@charset "UTF-8";
+
+:root {
+	/* --background: #153439; ОЧЕНЬ КРУТОЙ */
+	--background: #153439;
+	--background-2: #153439;
+	--important: #0b4e51;
+	--envelope: #28575b;
+	--section-blue: #0b474a;
+	--section: #11484a;
+	--red: #4d2d2d;
+	--green: #415e53;
+	--blue: #243b4f;
+}
+
+* {
+	text-decoration: none;
+	outline: none;
+	border: none;
+	/* font-family: , system-ui, sans-serif; */
+	font-family: "dejavu";
+	transition: 0.1s ease-out;
+}
+
+body {
+	--row-aside: 200px;
+	--row-settings: 100px;
+	--gap: 16px;
+	margin: 0;
+	width: auto;
+	height: 100vh;
+	display: grid;
+	grid-template-columns: [header] 220px [settings] 320px [main] auto [footer] 180px;
+	grid-template-rows: [aside] var(--row-aside, 200px) [settings] var(--row-settings, 100px) [main] auto;
+	gap: var(--gap, 16px);
+	padding: 0;
+	overflow-x: scroll;
+	overflow-y: clip;
+	background-color: var(--background, #fafafa);
+	--body-rays: inset 0px 8vh 35vw -8vw var(--background-2), inset 0px -8vh 35vw -8vw var(--background-2);
+	box-shadow: var(--body-rays);
+	-webkit-box-shadow: var(--body-rays);
+	-moz-box-shadow: var(--body-rays);
+}
+
+header {
+	z-index: 1000;
+	grid-column: header;
+	grid-row: 1 / -1;
+	display: grid;
+	grid-template-rows: inherit;
+}
+
+header>section[data-section="window"] {
+	z-index: 1100;
+	grid-row: aside;
+}
+
+header>section[data-section="main"] {
+	z-index: 1200;
+	grid-row: settings / -1;
+	display: grid;
+	background-color: var(--envelope);
+}
+
+section[data-section="servers"] {
+	z-index: 250;
+	grid-row: settings;
+	background-color: var(--important);
+	border-radius: 5px;
+}
+
+section[data-section="chats"] {
+	z-index: 200;
+	margin-bottom: var(--gap);
+	grid-row: main;
+	background-color: var(--section);
+	border-radius: 5px;
+}
+
+aside {
+	z-index: 300;
+	grid-column: 1 / -1;
+	grid-row: aside;
+	display: flex;
+}
+
+main {
+	--sections-default: 1;
+	--sections-width: 520px;
+	z-index: 100;
+	margin-bottom: var(--gap);
+	grid-row: settings / -1;
+	grid-column: main;
+	display: grid;
+	grid-template-rows: [settings] var(--row-settings, 100px) [main] auto;
+	grid-template-columns: repeat(var(--sections, var(--sections-default, 1)), [chat] var(--sections-width, 520px));
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap, 16px);
+	transition: 0s;
+}
+
+main>section {
+	width: 100%;
+	height: 100%;
+	max-width: var(--sections-width, 480px);
+	grid-column: var(--position, 1);
+	grid-row: main;
+	overflow-x: crop;
+	overflow-y: scroll;
+	background-color: var(--section);
+	border-radius: 5px;
+}
+
+aside {
+	z-index: 300;
+	grid-column: 1 / -1;
+	grid-row: aside;
+	display: flex;
+}
+
+main {
+	--sections-default: 1;
+	--sections-width: 480px;
+	z-index: 100;
+	grid-row: settings / -1;
+	grid-column: main;
+	display: grid;
+	grid-template-rows: [settings] var(--row-settings, 100px) [main] auto;
+	grid-template-columns: repeat(var(--sections, var(--sections-default, 1)), [chat] var(--sections-width, 480px));
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap, 16px);
+	transition: 0s;
+}
+
+main>section {
+	width: 100%;
+	max-width: var(--sections-width, 480px);
+	grid-column: var(--position, 1);
+	grid-row: main;
+	overflow: scroll;
+	background-color: var(--section);
+}
+
+main>section[data-panel-type="settings"] {
+	grid-row: settings;
+}
+
+footer {
+	z-index: 500;
+	grid-column: footer;
+	grid-row: 1 / -1;
+	display: grid;
+	grid-template-rows: inherit;
+}
+
+footer>section[data-section="window"] {
+	z-index: 600;
+	grid-row: aside;
+}
+
+footer>section[data-section="main"] {
+	z-index: 700;
+	grid-row: settings / -1;
+	display: grid;
+	background-color: var(--envelope);
+}
+
+:is(div, section).window {
+	overflow: hidden;
+	border-right: 1px solid;
+	border-right-color: rgba(174, 122, 122, 0.71);
+	background-color: rgba(255, 255, 255, 0.27);
+	backdrop-filter: blur(2px);
+}
+
+.unselectable {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

@@ -1,0 +1,35 @@
+{% extends "/themes/default/core.html" %}
+
+{% use "/themes/default/header.html" with css as header_css, body as header, js as header_js %}
+{% use "/themes/default/footer.html" with css as footer_css, body as footer, js as footer_js %}
+
+{% block css %}
+{{ parent() }}
+{{ block('header_css') }}
+{{ block('footer_css') }}
+{% endblock %}
+
+{% block body %}
+{{ block('header') }}
+<section data-section="servers">
+</section>
+<section data-section="chats">
+</section>
+<aside>
+	{% block aside %}
+	{{ aside|raw }}
+	{% endblock %}
+</aside>
+<main style="--sections: {{ sections ?? 1 }}">
+	{% block main %}
+	{{ main|raw }}
+	{% endblock %}
+</main>
+{{ block('footer') }}
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+{{ block('footer_js') }}
+{{ block('header_js') }}
+{% endblock %}
