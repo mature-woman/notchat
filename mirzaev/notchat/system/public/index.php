@@ -34,6 +34,8 @@ $router = new router;
 
 // Запись маршрутов
 $router->write('/', 'index', 'index');
+$router->write('/servers', 'index', 'servers', 'POST');
+$router->write('/servers/connect/$hash', 'server', 'write', 'POST');
 
 // Инициализация ядра
 $core = new core(namespace: __NAMESPACE__, router: $router, controller: new controller(false), model: new model(false));

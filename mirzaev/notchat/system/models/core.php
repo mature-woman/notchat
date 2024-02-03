@@ -24,6 +24,11 @@ class core extends model
 	final public const POSTFIX = '';
 
 	/**
+	 * Path to storage
+	 */
+	final public const STORAGE = '..' . DIRECTORY_SEPARATOR . 'storage';
+
+	/**
 	 * Constructor of an instance
 	 *
 	 * @param bool $initialize Initialize a model?
@@ -33,7 +38,7 @@ class core extends model
 	public function __construct(bool $initialize = true)
 	{
 		// For the extends system
-		parent::__construct($initialize); 
+		parent::__construct($initialize);
 
 		if ($initialize) {
 			// Initializing is requested
@@ -65,7 +70,7 @@ class core extends model
 	public function __get(string $name): mixed
 	{
 		return match ($name) {
-						default => parent::__get($name)
+			default => parent::__get($name)
 		};
 	}
 
@@ -108,4 +113,3 @@ class core extends model
 		};
 	}
 }
-

@@ -37,3 +37,10 @@ if (typeof window.asdasd === "function") (() => init_asdasd(asdasd))();
 else {document.addEventListener("asdasd.initialized", (e) =>
     init_asdasd(e.asdasd));}
 
+function init(chats) {
+  chats.generate.servers();
+}
+
+if (typeof window.chats === "function") (() => init(chats))();
+else {document.addEventListener("chats.initialized", (e) =>
+    init(e.chats));}

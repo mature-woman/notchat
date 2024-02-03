@@ -1,0 +1,51 @@
+i.icon.data {
+	--width: 14px;
+	--height: 14px;
+	position: relative;
+	width: var(--width);
+	height: var(--height);
+}
+
+i.icon.data,
+i.icon.data::after,
+i.icon.data::before {
+	display: block;
+	box-sizing: border-box;
+	border: 2px solid;
+	border-radius: 50%;
+}
+
+i.icon.data::before {
+	left: 2px;
+	top: 2px;
+	width: 6px;
+	height: 6px;
+}
+
+i.icon.data::after {
+	left: -6px;
+	top: -6px;
+	width: 22px;
+	height: 22px;
+	background: linear-gradient(to left, currentColor 8px, transparent 0) no-repeat bottom center/2px 8px;
+}
+
+i.icon.data::after,
+i.icon.data::before {
+	content: "";
+	position: absolute;
+}
+
+i.icon.data,
+i.icon.data::after {
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+}
+
+label>i.icon.data:first-of-type {
+	left: 13px;
+}
+
+label>i.icon.data+input {
+	padding-left: 38px !important;
+}

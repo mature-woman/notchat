@@ -11,6 +11,10 @@
 	--red: #4d2d2d;
 	--green: #415e53;
 	--blue: #243b4f;
+
+	/* --input-servers: #898c25; очень крутой зелёно говняный цвет */
+	--input-servers-text: #083932;
+	--input-servers-background: #109386;
 }
 
 * {
@@ -18,7 +22,8 @@
 	outline: none;
 	border: none;
 	/* font-family: , system-ui, sans-serif; */
-	font-family: "dejavu";
+	/* font-family: "dejavu"; */
+	font-family: 'DejaVu', sans-serif;
 	transition: 0.1s ease-out;
 }
 
@@ -65,9 +70,37 @@ header>section[data-section="main"] {
 
 section[data-section="servers"] {
 	z-index: 250;
+	padding: 14px 15px;
 	grid-row: settings;
-	background-color: var(--important);
 	border-radius: 5px;
+	background-color: var(--important);
+}
+
+section[data-section="servers"]>search {
+	display: flex;
+	flex-direction: column;
+}
+
+section[data-section="servers"]>search>label {
+	position: relative;
+	height: 1.9rem;
+	display: flex;
+	align-items: center;
+	color: var(--input-servers-text);
+}
+
+section[data-section="servers"]>search>label>i:first-child:first-of-type {
+	position: absolute;
+}
+
+section[data-section="servers"]>search>label>i:first-child:first-of-type+input:first-of-type {
+	width: 100%;
+	height: 100%;
+	padding: 0 10px;
+	font-weight: 500;
+	border-radius: 3px;
+	color: var(--input-servers-text);
+	background-color: var(--input-servers-background);
 }
 
 section[data-section="chats"] {
