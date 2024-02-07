@@ -36,7 +36,7 @@ body {
 	height: 100vh;
 	display: grid;
 	grid-template-columns: [header] 220px [settings] 320px [main] auto [footer] 180px;
-	grid-template-rows: [aside] var(--row-aside, 200px) [settings] var(--row-settings, 100px) [main] auto;
+	grid-template-rows: [aside] var(--row-aside, 200px) [settings] var(--row-settings, 100px) [main] calc(100vh - var(--row-aside) - var(--gap) - var(--row-settings) - var(--gap)) auto;
 	gap: var(--gap, 16px);
 	padding: 0;
 	overflow-x: scroll;

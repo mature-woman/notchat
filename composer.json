@@ -24,7 +24,7 @@
 	},
 	"require": {
 		"php": "~8.3",
-		"ext-openswoole": "~20230831",
+		"ext-sodium": "~8.3",
 		"mirzaev/minimal": "^2.2.0",
 		"twig/twig": "^3.4"
 	},

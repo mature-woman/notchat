@@ -17,5 +17,14 @@
 	animation-name: uprise;
 	animation-fill-mode: forwards;
 	animation-timing-function: ease-in;
+}
 
+
+@keyframes marquee {
+  0% { left: 0; }
+  100% { left: -100%; }
+}
+
+.animation.marquee {
+  animation: marquee var(--speed, 3s) linear infinite;
 }

@@ -2,21 +2,22 @@
 	<search>
 		<label>
 			<i class="icon data"></i>
-			<input class="" name="server" type="text" placeholder="Сервер" list="servers" {% if current and current.address %}
-				value="{{ current.address }}" {% endif %} onkeypress="" autofocus="true">
+			<input class="" name="server" type="text" placeholder="Сервер" list="servers" {% if current and current.domain %}
+				value="{{ current.domain }}" {% endif %}onkeypress="localStorage.server_domain = this.value"
+				onselect="localStorage.server_domain = this.value" onchange="chats.server.select(this.value)" autofocus="true">
 			<datalist id="servers">
 				{% for server in servers %}
-				<option value="server.">[{{ server.location }}] {{ server.name }}{% if server.description %} {{
+				<option value="{{ server.domain }}">{{ server.domain }}{% if server.description %} {{
 					server.description
 					}}{% endif %}</option>
 				{% endfor %}
 			</datalist>
 		</label>
-		<output id="server">
-			{% if current %}
-			<p>{{ current.name }} <span>{{ current.location}}</span></p>
-			<p>{{ current.description }}</p>
-			{% endif %}
+		<output>
+			<figure>
+				<figcaption data-server="ip">{% if current %}{{ current.ip }}:{{ current.port }}{% endif %}</figcaption>
+				<span data-server="description" class="animation marquee">{{ current.description }}</span>
+			</figure>
 		</output>
 	</search>
 </section>

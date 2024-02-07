@@ -54,7 +54,7 @@ final class index extends core
 			// Generating the reponse
 			echo json_encode(
 				[
-					'html' => $this->view->render('sections/servers.html', ['current' => server::read($parameters['server'], errors: $this->errors), 'servers' => server::all(100, errors: $this->errors) ?? []]),
+					'html' => $this->view->render('sections/servers.html', ['current' => isset($parameters['server']) ? server::read($parameters['server'], errors: $this->errors) : null, 'servers' => server::all(100, errors: $this->errors) ?? []]),
 					'errors' => null
 				]
 			);
