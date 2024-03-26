@@ -11,6 +11,7 @@
 	--red: #4d2d2d;
 	--green: #415e53;
 	--blue: #243b4f;
+	--blue-dark: #09262d;
 
 	/* --input-servers: #898c25; очень крутой зелёно говняный цвет */
 	--input-servers-text: #083932;
@@ -29,14 +30,13 @@
 
 body {
 	--row-aside: 200px;
-	--row-settings: 100px;
 	--gap: 16px;
 	margin: 0;
 	width: auto;
 	height: 100vh;
 	display: grid;
 	grid-template-columns: [header] 220px [settings] 320px [main] auto [footer] 180px;
-	grid-template-rows: [aside] var(--row-aside, 200px) [settings] var(--row-settings, 100px) [main] calc(100vh - var(--row-aside) - var(--gap) - var(--row-settings) - var(--gap)) auto;
+	grid-template-rows: [aside] var(--row-aside, 200px) [main] calc(100vh - var(--row-aside));
 	gap: var(--gap, 16px);
 	padding: 0;
 	overflow-x: scroll;
@@ -63,101 +63,33 @@ header>section[data-section="window"] {
 
 header>section[data-section="main"] {
 	z-index: 1200;
-	grid-row: settings / -1;
-	display: grid;
+	grid-row: main;
+	display: flex;
+	flex-direction: column;
 	background-color: var(--envelope);
 }
 
-section[data-section="servers"] {
+aside {
 	z-index: 250;
+	grid-column: 1 / -1;
+	grid-row: aside;
+	display: flex;
+}
+
+section[data-section="menu"] {
+	z-index: 300;
 	padding: 14px 15px;
-	grid-row: settings;
+	grid-row: main;
+	grid-column: settings;
 	border-radius: 5px;
 	background-color: var(--important);
-}
-
-section[data-section="servers"]>search {
-	display: flex;
-	flex-direction: column;
-}
-
-section[data-section="servers"]>search>label {
-	position: relative;
-	height: 1.9rem;
-	display: flex;
-	align-items: center;
-	color: var(--input-servers-text);
-}
-
-section[data-section="servers"]>search>label>i:first-child:first-of-type {
-	position: absolute;
-}
-
-section[data-section="servers"]>search>label>i:first-child:first-of-type+input:first-of-type {
-	width: 100%;
-	height: 100%;
-	padding: 0 10px;
-	font-weight: 500;
-	border-radius: 3px;
-	color: var(--input-servers-text);
-	background-color: var(--input-servers-background);
-}
-
-section[data-section="chats"] {
-	z-index: 200;
-	margin-bottom: var(--gap);
-	grid-row: main;
-	background-color: var(--section);
-	border-radius: 5px;
-}
-
-aside {
-	z-index: 300;
-	grid-column: 1 / -1;
-	grid-row: aside;
-	display: flex;
-}
-
-main {
-	--sections-default: 1;
-	--sections-width: 520px;
-	z-index: 100;
-	margin-bottom: var(--gap);
-	grid-row: settings / -1;
-	grid-column: main;
-	display: grid;
-	grid-template-rows: [settings] var(--row-settings, 100px) [main] auto;
-	grid-template-columns: repeat(var(--sections, var(--sections-default, 1)), [chat] var(--sections-width, 520px));
-	flex-direction: column;
-	align-items: center;
-	gap: var(--gap, 16px);
-	transition: 0s;
-}
-
-main>section {
-	width: 100%;
-	height: 100%;
-	max-width: var(--sections-width, 480px);
-	grid-column: var(--position, 1);
-	grid-row: main;
-	overflow-x: crop;
-	overflow-y: scroll;
-	background-color: var(--section);
-	border-radius: 5px;
-}
-
-aside {
-	z-index: 300;
-	grid-column: 1 / -1;
-	grid-row: aside;
-	display: flex;
 }
 
 main {
 	--sections-default: 1;
 	--sections-width: 480px;
 	z-index: 100;
-	grid-row: settings / -1;
+	grid-row: main;
 	grid-column: main;
 	display: grid;
 	grid-template-rows: [settings] var(--row-settings, 100px) [main] auto;
@@ -177,10 +109,6 @@ main>section {
 	background-color: var(--section);
 }
 
-main>section[data-panel-type="settings"] {
-	grid-row: settings;
-}
-
 footer {
 	z-index: 500;
 	grid-column: footer;
@@ -196,9 +124,14 @@ footer>section[data-section="window"] {
 
 footer>section[data-section="main"] {
 	z-index: 700;
-	grid-row: settings / -1;
-	display: grid;
+	grid-row: main;
+	display: flex;
+	flex-direction: column;
 	background-color: var(--envelope);
+}
+
+footer>section[data-section="main"]>#language {
+	margin-top: auto;
 }
 
 :is(div, section).window {
@@ -216,4 +149,8 @@ footer>section[data-section="main"] {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.untouchable {
+	pointer-events: none;
 }

@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+:root {
+	--animations: 1;
+}
+
 @keyframes uprise {
 	0% {
 		opacity: 0;
@@ -13,18 +17,60 @@
 }
 
 .animation.uprise {
-	animation-duration: 0.1s;
+	animation-duration: var(--animation-duration, 0.1s);
 	animation-name: uprise;
 	animation-fill-mode: forwards;
 	animation-timing-function: ease-in;
 }
 
+@keyframes slide-down {
+	0% {
+		transform: translate(0, -100%);
+		clip-path: polygon(0% 100%, 100% 100%, 100% 200%, 0% 200%);
+	}
+
+	100% {
+		transform: translate(0, 0%);
+		clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	}
+}
+
+.animation.slide-down {
+	animation-duration: var(--animation-duration, 0.2s);
+	animation-name: slide-down;
+	animation-fill-mode: forwards;
+	animation-timing-function: cubic-bezier(0, 1, 1, 1);
+}
+
+@keyframes slide-down-revert {
+	0% {
+		transform: translate(0, 0%);
+		clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	}
+
+	100% {
+		transform: translate(0, -100%);
+		clip-path: polygon(0% 100%, 100% 100%, 100% 200%, 0% 200%);
+	}
+}
+
+.animation.slide-down-revert {
+	animation-duration: var(--animation-duration, 0.2s);
+	animation-name: slide-down-revert;
+	animation-fill-mode: forwards;
+	animation-timing-function: cubic-bezier(1, 0, 1, 1);
+}
 
 @keyframes marquee {
-  0% { left: 0; }
-  100% { left: -100%; }
+	0% {
+		left: 0;
+	}
+
+	100% {
+		left: -100%;
+	}
 }
 
 .animation.marquee {
-  animation: marquee var(--speed, 3s) linear infinite;
+	animation: marquee var(--speed, 3s) linear infinite;
 }

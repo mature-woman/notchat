@@ -21,7 +21,7 @@ define('STORAGE', realpath('..' . DIRECTORY_SEPARATOR . 'storage'));
 define('INDEX', __DIR__);
 
 // Автозагрузка
-require __DIR__	. DIRECTORY_SEPARATOR
+require INDEX . DIRECTORY_SEPARATOR
 	. '..' . DIRECTORY_SEPARATOR
 	. '..' . DIRECTORY_SEPARATOR
 	. '..' . DIRECTORY_SEPARATOR
@@ -33,10 +33,14 @@ require __DIR__	. DIRECTORY_SEPARATOR
 $router = new router;
 
 // Запись маршрутов
-$router->write('/', 'index', 'index');
+$router->write('/', 'index', 'index', 'GET');
+$router->write('/', 'index', 'index', 'POST');
+$router->write('/manifest', 'index', 'manifest', 'GET');
+$router->write('/offline', 'index', 'offline', 'GET');
+$router->write('/cache.js', 'index', 'cache', 'GET');
 $router->write('/server/read/$server', 'server', 'read', 'POST');
+$router->write('/server/write/$server', 'server', 'write', 'POST');
 $router->write('/servers', 'index', 'servers', 'POST');
-$router->write('/servers/connect/$domain', 'server', 'write', 'POST');
 
 // Инициализация ядра
 $core = new core(namespace: __NAMESPACE__, router: $router, controller: new controller(false), model: new model(false));

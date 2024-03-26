@@ -4,11 +4,18 @@
 {% block body %}
 <footer>
 	<div class="window" data-section="window">
- 	
- </div>
+
+	</div>
 	<section data-section="main">
- 	
- </section>
+		<select id="language" autocomplete="language" onselect="text.language.select(this.value)">
+			{% for language in languages %}
+			<option value="{{ language }}">{{ language }}</option>
+			{% endfor %}
+		</select>
+		<script>
+			document.getElementById('language').value = localStorage.language ?? 'english';
+		</script>
+	</section>
 </footer>
 {% endblock %}
 

@@ -2,22 +2,33 @@
 
 {% use "/themes/default/header.html" with css as header_css, body as header, js as header_js %}
 {% use "/themes/default/footer.html" with css as footer_css, body as footer, js as footer_js %}
+{% use '/themes/default/hotline/index.html' with css as hotline_css, body as hotline_body, js as hotline_js, js_init as
+hotline_js_init %}
 
 {% block css %}
 {{ parent() }}
 {{ block('header_css') }}
 {{ block('footer_css') }}
+{{ block('hotline_css') }}
+<link type="text/css" rel="stylesheet" href="/themes/default/css/trash.css">
 {% endblock %}
 
 {% block body %}
 {{ block('header') }}
-<section data-section="chats">
-</section>
 <aside>
 	{% block aside %}
+	{{ block('hotline_body') }}
 	{{ aside|raw }}
 	{% endblock %}
 </aside>
+{% block menu %}
+{% if menu %}
+{{ menu|raw }}
+{% else %}
+<section data-section="menu" data-menu-type="chats">
+</section>
+{% endif %}
+{% endblock %}
 <main style="--sections: {{ sections ?? 1 }}">
 	{% block main %}
 	{{ main|raw }}
@@ -30,4 +41,6 @@
 {{ parent() }}
 {{ block('footer_js') }}
 {{ block('header_js') }}
+{{ block('hotline_js') }}
+{{ block('hotline_js_init') }}
 {% endblock %}

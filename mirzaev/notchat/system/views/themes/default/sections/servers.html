@@ -1,23 +1,93 @@
-<section data-section="servers" class="animation uprise">
-	<search>
-		<label>
-			<i class="icon data"></i>
-			<input class="" name="server" type="text" placeholder="Сервер" list="servers" {% if current and current.domain %}
-				value="{{ current.domain }}" {% endif %}onkeypress="localStorage.server_domain = this.value"
-				onselect="localStorage.server_domain = this.value" onchange="chats.server.select(this.value)" autofocus="true">
-			<datalist id="servers">
-				{% for server in servers %}
-				<option value="{{ server.domain }}">{{ server.domain }}{% if server.description %} {{
-					server.description
-					}}{% endif %}</option>
-				{% endfor %}
-			</datalist>
-		</label>
-		<output>
-			<figure>
-				<figcaption data-server="ip">{% if current %}{{ current.ip }}:{{ current.port }}{% endif %}</figcaption>
-				<span data-server="description" class="animation marquee">{{ current.description }}</span>
-			</figure>
-		</output>
-	</search>
-</section>
+<search class="animation uprise">
+	<label class="{% if current %}active{% else %}empty{% endif %}">
+		<i class="icon data"></i>
+		<input 
+		class="" 
+		name="server" 
+		type="text" 
+		placeholder="Сервер" 
+		list="servers" 
+		maxlength="120"
+		spellcheck="false"
+		{% if current and current.ip and current.port %} value="{{ current.ip }}:{{ current.port }}" {% endif %}
+		onkeyup="chats.server.select(this.value)"
+		onchange="chats.server.select(this.value, true)"
+		{% if not current %} autofocus="true" {% endif %}
+		>
+		<!-- <datalist id="servers">
+			{% for server in servers %}
+			<option value="{{ server.ip }}:{{ server.port }}">{{ server.domain }}: {{ server.ip }}:{{ server.port }}</option>
+			{% endfor %}
+		</datalist> -->
+	</label>
+	<output class="animation slide-down" style="--animation-height: 64px">
+		<figure>
+			<figcaption data-server="domain">{% if current %}{{ current.domain }}{% endif %}</figcaption>
+			<pre data-server="description">{{ current.description }}</pre>
+		</figure>
+	</output>
+	{% for image in current.images|slice(0,10)%}
+		<style>
+		section[data-section="menu"][data-menu="chats"]>search>img[data-server="image"]:nth-child({{ loop.index }}) {
+			z-index: 5{{ loop.index }};
+		}
+	
+		section[data-section="menu"][data-menu="chats"][data-menu-status="connected"]>search>img[data-server="image"]:nth-of-type({{ loop.index }}):not(.animation) {
+			{{ image.connected.css }}
+		}
+
+		section[data-section="menu"][data-menu="chats"]:is([data-menu-status="disconnected"], [data-menu-status="connecting"])>search>img[data-server="image"]:nth-of-type({{ loop.index }}):not(.animation) {
+			{{ image.disconnected.css }}
+		}
+
+		section[data-section="menu"][data-menu="chats"]:not([data-menu-status="disconnected"], [data-menu-status="connected"])>search>img[data-server="image"]:nth-of-type({{ loop.index }}) {
+			
+		}
+
+		{% if image.animations %}
+		{% if image.animations.connected %}
+		@keyframes server-image-{{ loop.index }}-connected {
+			{{ image.animations.connected.keyframes }} /* нужен фильтр */
+		}
+		section[data-section="menu"][data-menu="chats"][data-menu-status="connected"]>search>img[data-server="image"]:nth-of-type({{ loop.index }}).animation {
+			{{ image.animations.connected.css }}
+			animation-name: server-image-{{ loop.index }}-connected;
+			{% if image.animations.connected.duration %}animation-duration: {{ image.animations.connected.duration }}s;{% endif %}
+			{% if image.animations.connected.fill.mode %}animation-fill-mode: {{ image.animations.connected.fill.mode }};{% endif %}
+			{% if image.animations.connected.timing.function %}animation-timing-function: {{ image.animations.connected.timing.function }};{% endif %}
+		}
+		{% endif %}
+
+		{% if image.animations.disconnected %}
+		@keyframes server-image-{{ loop.index }}-disconnected {
+			{{ image.animations.disconnected.keyframes }} /* нужен фильтр */
+		}
+		section[data-section="menu"][data-menu="chats"]:is([data-menu-status="disconnected"], [data-menu-status="connecting"])>search>img[data-server="image"]:nth-of-type({{ loop.index }}).animation {
+			{{ image.animations.disconnected.css }}
+			animation-name: server-image-{{ loop.index }}-disconnected;
+			{% if image.animations.disconnected.duration %}animation-duration: {{ image.animations.disconnected.duration }}s;{% endif %}
+			{% if image.animations.disconnected.fill.mode %}animation-fill-mode: {{ image.animations.disconnected.fill.mode }};{% endif %}
+			{% if image.animations.disconnected.timing.function %}animation-timing-function: {{ image.animations.disconnected.timing.function }};{% endif %}
+		}
+		{% endif %}
+		{% endif %}
+		</style>
+		{% if image.url %}
+		<img 
+		data-server="image"
+		class="unselectable untouchable animation"
+		style="{% if image.style %} {{ image.style }}{% endif %}"
+		src="{{ image.url }}" 
+		alt="{{ image.description }}" 
+		loading="eager" 
+		decoding="async" 
+		importance="high" 
+		referrerpolicy="no-referrer" 
+		data-nosnippet="true"
+		{% if image.animations.connected.duration %}data-server-image-animations-connected-duration="{{ image.animations.connected.duration }}"{% endif %}
+		{% if image.animations.disconnected.duration %}data-server-image-animations-disconnected-duration="{{ image.animations.disconnected.duration }}"{% endif %}
+		ondragstart="return false"
+		/>
+		{% endif %}
+	{% endfor %}
+</search>

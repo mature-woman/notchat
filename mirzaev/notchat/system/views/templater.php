@@ -50,14 +50,14 @@ final class templater extends controller implements ArrayAccess
 	 * Render a HTML-document
 	 *
 	 * @param string $file Related path to a HTML-document
-	 * @param ?array $variables Registry of variables to push into registry of global variables
+	 * @param array $variables Registry of variables to push into registry of global variables
 	 *
 	 * @return ?string HTML-document
 	 */
-	public function render(string $file, ?array $variables = null): ?string
+	public function render(string $file, array $variables = []): ?string
 	{
 		// Generation and exit (success)
-		return $this->twig->render('themes' . DIRECTORY_SEPARATOR . $this->twig->getGlobals()['theme'] . DIRECTORY_SEPARATOR . $file, $this->twig->mergeGlobals($variables ?? []));
+		return $this->twig->render('themes' . DIRECTORY_SEPARATOR . $this->twig->getGlobals()['theme'] . DIRECTORY_SEPARATOR . $file, $variables + $this->variables);
 	}
 
 	/**

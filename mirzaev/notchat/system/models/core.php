@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace mirzaev\notchat\models;
 
+// Files of the project
+use mirzaev\notchat\models\enumerations\log as type;
+
 // Framework for PHP
 use mirzaev\minimal\model;
 
@@ -24,7 +27,12 @@ class core extends model
 	final public const POSTFIX = '';
 
 	/**
-	 * Path to storage
+	 * Path to public directory
+	 */
+	final public const PUBLIC = '..' . DIRECTORY_SEPARATOR . 'public';
+
+	/**
+	 * Path to storage directory
 	 */
 	final public const STORAGE = '..' . DIRECTORY_SEPARATOR . 'storage';
 

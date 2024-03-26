@@ -1,0 +1,38 @@
+section.hotline {
+	display: inline-flex;  
+	height: calc(100% - 20px);
+  padding: 10px 0px;
+	transition: unset;
+	/* gap нельзя */
+}
+
+section.hotline * {
+	transition: unset;
+}
+
+
+section.hotline:last-child {
+	margin-bottom: unset;
+}
+
+section.hotline>article {
+	position: relative;
+	margin-right: 18px;
+	width: calc(140px - var(--padding, 0px) * 2);
+	height: calc(180px - var(--padding, 0px) * 2);
+	padding: var(--padding, 0px);
+	display: flex;
+	align-self: flex-end;
+	overflow: clip;
+	border-radius: 3px;
+	background-color: var(--blue-dark);
+	/* box-shadow: 0px -6px 6px rgba(0, 0, 0, 0.3); */
+}
+
+section.hotline>article:last-child {
+	margin-right: unset;
+}
+
+section.hotline>article>* {
+	margin: auto;
+}

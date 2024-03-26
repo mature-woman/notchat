@@ -2,10 +2,13 @@
 
 {% block css %}
 {{ parent() }}
+<link type="text/css" rel="stylesheet" href="/themes/{{ theme }}/css/chats.css" />
 <link type="text/css" rel="stylesheet" href="/themes/{{ theme }}/css/icons/data.css" />
 {% endblock %}
 
-{% block main %}
+{% block menu %}
+<section data-section="menu" data-menu="chats">
+</section>
 {% endblock %}
 
 {% block js %}

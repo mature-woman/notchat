@@ -5,8 +5,11 @@ if (typeof window.core !== "function") {
 
   // Initialize of the class in global namespace
   window.core = class core {
-		// Label for the <main> element
-		static main = document.body.getElementsByTagName('main')[0];
+		// Domain
+		static domain = window.location.hostname;
+
+		// Animations are enabled?
+		static animations = getComputedStyle(document.body).getPropertyValue('--animations') === '1';
 
 		// Label for the <header> element
 		static header = document.body.getElementsByTagName('header')[0];
@@ -14,11 +17,11 @@ if (typeof window.core !== "function") {
 		// Label for the <aside> element
 		static aside = document.body.getElementsByTagName('aside')[0];
 
-		// Label for the "servers" element
-		static servers = document.body.querySelector("section[data-section='servers']");
+		// Label for the "menu" element
+		static menu = document.body.querySelector("section[data-section='menu']");
 
-		// Label for the "chats" element
-		static chats = document.body.querySelector("section[data-section='chats']");
+		// Label for the <main> element
+		static main = document.body.getElementsByTagName('main')[0];
 
 		// Label for the <footer> element
 		static footer = document.body.getElementsByTagName('footer')[0];

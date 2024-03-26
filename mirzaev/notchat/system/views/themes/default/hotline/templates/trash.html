@@ -1,0 +1,15 @@
+<h1>{{ title }}</h1>
+{{ main|raw }}
+{% if image is not null %}<img src="{{ image.src }}" alt="{{ image.alt }}">{% endif %}
+<script>
+	// Initialization of the element
+	const element = document.getElementById('{{ id }}');
+
+	if (element instanceof HTMLElement) {
+		// Found the element
+
+		element.addEventListener('mouseenter', () => {
+			console.log('{{ id }}');
+		});
+	}
+</script>

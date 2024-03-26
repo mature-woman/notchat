@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+section[data-section="menu"][data-menu="chats"] {
+	position: relative;
+	padding: unset;
+	background-color: transparent;
+}
+
+section[data-section="menu"][data-menu="chats"]>search {
+	display: flex;
+	flex-direction: column;
+	border-radius: 5px;
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label {
+	z-index: 200;
+	position: relative;
+	height: 1.9rem;
+	display: flex;
+	align-items: center;
+	overflow: clip;
+	color: var(--input-servers-text);
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label>input {
+	border-radius: 5px;
+	transition: 0.3s cubic-bezier(1, 0, 1, 1);
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label>input:placeholder-shown {
+	/* blyaaaa */
+	background-color: red;
+}
+
+section[data-section="menu"][data-menu="chats"]:not([data-menu-status="connecting"])>search>label:has(+ output>figure>figcaption:not(:empty) + pre:not(:empty))>input {
+	border-radius: 5px 5px 0 0;
+	transition: 0.3s cubic-bezier(0, 1, 1, 1);
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label>i:first-child:first-of-type {
+	position: absolute;
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label>i:first-child:first-of-type+input:first-of-type {
+	width: 100%;
+	height: 100%;
+	padding: 0 10px;
+	font-weight: 500;
+	color: var(--input-servers-text);
+	background-color: var(--input-servers-background);
+}
+
+section[data-section="menu"][data-menu="chats"]>search>output {
+	--max-height: 120px;
+	z-index: 100;
+	max-height: var(--max-height, 120px);
+	overflow: hidden;
+	border-radius: 0 0 5px 5px;
+	background-color: var(--important);
+	transition: .1s ease-in;
+}
+
+section[data-section="menu"][data-menu="chats"]>search>output>figure {
+	margin: 13px 17px;
+}
+
+section[data-section="menu"][data-menu="chats"]>search>label+output>figure:has(> figcaption:empty + pre:empty) {
+	margin: 0 17px;
+}
+
+section[data-section="menu"][data-menu="chats"]>search>output>figure>pre[data-server="description"] {
+	margin: unset;
+}
+
+/* section[data-section="menu"][data-menu="chats"]>div#chats:empty {
+	display: none;
+}
+ */
+section[data-section="menu"][data-menu="chats"]>search>img[data-server="image"] {
+	z-index: 50;
+	position: absolute;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+/* section[data-section="menu"][data-menu="chats"]:not(:is([data-menu-status="connected"], [data-menu-status="disconnected"]))>search>img[data-server="image"] {
+	opacity: 0;
+} */

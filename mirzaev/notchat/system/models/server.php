@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace mirzaev\notchat\models;
 
-// Framework for PHP
-use mirzaev\minimal\model;
+// Files of the project
+use mirzaev\notchat\models\enumerations\log as type;
 
 // Built-in libraries
 use exception,
 	DirectoryIterator as parser;
 
 /**
- * Core of models
+ * Server
  *
  * @package mirzaev\notchat\models
  * @author Arsen Mirzaev Tatyano-Muradovich <arsen@mirzaev.sexy>
@@ -38,6 +38,7 @@ class server extends core
 	public static function write(string $domain, string $json = '', array &$errors = []): void
 	{
 		try {
+			// 
 			if (strlen($domain) > 32) throw new exception('Domain cannot be longer than 32 characters');
 
 			// Initializing of path to file
@@ -57,7 +58,7 @@ class server extends core
 				// File found
 
 				// Open file with server data
-				$file = fopen($path, "r");
+				$file = fopen($path, "c+");
 
 				// Read server data
 				$old = json_decode(fread($file, filesize($path)), true, 8);
@@ -69,7 +70,7 @@ class server extends core
 					// The keys match or the file has not been updated for more than 3 days
 
 					// Open file with server data
-					$file = fopen($path, "w");
+					$file = fopen($path, "c");
 
 					// Write server data
 					fwrite($file, json_encode($new));
@@ -79,12 +80,15 @@ class server extends core
 
 					// Write DNS record
 					dns::write(domain: $new['domain'], ip: $new['ip'], port: $new['port'], errors: $errors);
+
+					// Write to the log of servers
+					log::write(type::SERVERS, "[UPDATE] {$old['domain']} {$old['ip']}:{$old['port']} -> {$new['domain']} {$new['ip']}:{$new['port']}");
 				} else throw new exception('Public keys do not match');
 			} else {
 				// File is not found
 
 				// Open file with server data
-				$file = fopen($path, "w");
+				$file = fopen($path, "c");
 
 				// Write server data
 				fwrite($file, json_encode($new));
@@ -94,15 +98,21 @@ class server extends core
 
 				// Write DNS record
 				dns::write(domain: $new['domain'], ip: $new['ip'], port: $new['port'], errors: $errors);
+
+				// Write to the log of errors
+				log::write(type::SERVERS, "[CREATE] {$new['domain']} {$new['ip']}:{$new['port']}");
 			}
 		} catch (exception $e) {
-			// Write to buffer of errors
+			// Write to the buffer of errors
 			$errors[] = [
 				'text' => $e->getMessage(),
 				'file' => $e->getFile(),
 				'line' => $e->getLine(),
 				'stack' => $e->getTrace()
 			];
+
+			// Write to the log of errors
+			log::write(type::ERRORS, "[{$_SERVER['REMOTE_ADDR']}] " . (empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : "[{$_SERVER['HTTP_X_FORWARDED_FOR']}] ") . $e->getMessage());
 		}
 	}
 
@@ -112,35 +122,47 @@ class server extends core
 	 * Read JSON from file of server
 	 *
 	 * @param string $domain Domain of the server
+	 * @param int $time Number of seconds since the file was last edited (86400 seconds is 1 day)
 	 * @param array &$errors Buffer of errors
 	 *
 	 * @return string|null JSON with data of the server
 	 */
-	public static function read(string $domain, &$errors = []): ?string
+	public static function read(string $domain, int $time = 86400, &$errors = []): ?string
 	{
 		try {
 			// Initializing of path to file
 			$path = static::SERVERS . DIRECTORY_SEPARATOR . "$domain.json";
 
-			// Open file with server data
-			$file = fopen($path, "r");
+			if (file_exists($path) && filesize($path) > 0) {
+				// File exists and not empty
 
-			// Read server data
-			$server = fread($file, filesize($path));
+				if (time() - filectime($path) < $time && is_readable($path)) {
+					// The file is actual (1 day by default) and writable
 
-			// Close file with server data
-			fclose($file);
+					// Open file with server data
+					$file = fopen($path, 'c+');
 
-			// Exit (success)
-			return $server;
+					// Read server data
+					$server = fread($file, filesize($path));
+
+					// Close file with server data
+					fclose($file);
+
+					// Exit (success)
+					return $server;
+				}
+			}
 		} catch (exception $e) {
-			// Write to buffer of errors
+			// Write to the buffer of errors
 			$errors[] = [
 				'text' => $e->getMessage(),
 				'file' => $e->getFile(),
 				'line' => $e->getLine(),
 				'stack' => $e->getTrace()
 			];
+
+			// Write to the log of errors
+			log::write(type::ERRORS, "[{$_SERVER['REMOTE_ADDR']}] " . (empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : "[{$_SERVER['HTTP_X_FORWARDED_FOR']}] ") . $e->getMessage());
 		}
 
 		// Exit (fail)
@@ -175,6 +197,8 @@ class server extends core
 			$skip = $page * $amount;
 
 			foreach (new parser(static::SERVERS) as $file) {
+				// Iterate through all files in a directory
+
 				// Skipping unnecessary files
 				if (--$skip > $amount) continue;
 
@@ -182,31 +206,39 @@ class server extends core
 				if ($file->isDot()) continue;
 
 				if (time() - $file->getCTime() < $time && $file->isReadable()) {
-					// The file is actual (3 days by default) and writable
+					// The file is actual (1 day by default) and readable
 
-					// Open file with server data
-					$server = $file->openFile('r');
+					if (($size = $file->getSize()) > 0) {
+						// The file is not empty
 
-					// Write server data to the output buffer
-					$buffer[] = json_decode($server->fread($file->getSize()));
+						// Open the file with server data
+						$server = $file->openFile('c+');
 
-					// Close file with server data
-					unset($file);
+						// Write server data to the output buffer
+						$buffer[] = json_decode($server->fread($size));
+
+						// Close the file with server data
+						unset($file);
+					}
 				}
 
+				// Exit (success)
 				if (--$amount < 1) break;
 			}
 
 			// Exit (success)
 			return $buffer;
 		} catch (exception $e) {
-			// Write to buffer of errors
+			// Write to the buffer of errors
 			$errors[] = [
 				'text' => $e->getMessage(),
 				'file' => $e->getFile(),
 				'line' => $e->getLine(),
 				'stack' => $e->getTrace()
 			];
+
+			// Write to the log of errors
+			log::write(type::ERRORS, "[{$_SERVER['REMOTE_ADDR']}] " . (empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : "[{$_SERVER['HTTP_X_FORWARDED_FOR']}] ") . $e->getMessage());
 		}
 
 		// Exit (fail)
